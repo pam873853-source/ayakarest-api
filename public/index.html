@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AYAKA API — Your API. Your Control. Your Ecosystem.</title>
+  <meta name="description" content="AYAKA API: platform REST API Management dengan API Key Manager, Magic Link Premium, keamanan berlapis, dan analytics real-time. Powered by AYAKA Sync · OLPI STORE.">
+  <meta name="theme-color" content="#FFD600">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="/js/theme.js"></script>
+</head>
+<body data-page="landing">
+<a class="skip-link" href="#main">Lewati ke konten</a>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="/" aria-label="AYAKA API beranda"><span class="logo-mark">AYAKA</span><span class="logo-text">API</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#rest">REST API</a></li>
+      <li><a href="#features">Fitur</a></li>
+      <li><a href="#example">Contoh</a></li>
+      <li><a href="/documentation">Dokumentasi</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="/status">Status</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-icon btn-ghost theme-toggle" data-theme-toggle type="button"></button>
+      <span data-auth-slot class="row" style="gap:8px">
+        <a class="btn btn-sm btn-hide-sm" href="/login">Login</a>
+        <a class="btn btn-primary btn-sm" href="/register">Register</a>
+      </span>
+      <button class="btn btn-icon nav-burger" type="button" aria-label="Menu" aria-controls="nav-links" aria-expanded="false" data-icon="menu"></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container" data-announcements></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="row reveal" style="margin-bottom:18px">
+          <span class="tag tag-dark"><svg class="logo-sync" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 01-15.5 6.3L3 16"/><path d="M3 12a9 9 0 0115.5-6.3L21 8"/></svg>Powered by AYAKA Sync</span>
+          <span class="tag">REST · JSON · X-API-Key</span>
+        </div>
+        <h1 class="reveal" style="--d:.05s">YOUR <span class="hl">API.</span><br>YOUR <span class="outline">CONTROL.</span><br>YOUR ECOSYSTEM.</h1>
+        <p class="hero-lead reveal" style="--d:.12s">AYAKA API adalah platform REST API Management untuk developer: buat akun, generate API Key yang aman, kirim Magic Link Premium lewat email, dan pantau setiap request secara real-time — semuanya dari satu dashboard.</p>
+        <div class="hero-cta reveal" style="--d:.18s">
+          <a class="btn btn-primary btn-lg" href="/register" data-icon="bolt">Get Started</a>
+          <a class="btn btn-lg" href="/documentation" data-icon="book">Explore Documentation</a>
+        </div>
+        <div class="hero-meta reveal" style="--d:.24s">
+          <span class="tag">Argon2id</span><span class="tag">HMAC-SHA256 Keys</span><span class="tag">Neon PostgreSQL</span><span class="tag">Resend Email</span>
+        </div>
+      </div>
+      <div class="hero-visual reveal reveal-right">
+        <span class="sticker s1 float">Live!</span>
+        <div class="terminal float">
+          <div class="terminal-bar"><i></i><i></i><i></i><span style="margin-left:8px">GET /api/health</span><span style="margin-left:auto" id="hero-latency">…</span></div>
+<pre id="hero-terminal"><span class="t-dim">$</span> curl <span class="t-str" data-base-url>https://YOUR-AYAKA-DOMAIN.vercel.app</span>/api/health
+
+<span class="t-dim">// menghubungi server…</span></pre>
+        </div>
+        <span class="sticker s2 float">One-time Magic Link</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>GET /api/health</span><span>POST /api/keys/generate</span><span>POST /api/am/send</span><span>POST /api/am/verif</span><span>GET /api/am/status</span><span>POST /api/am/renew</span><span>POST /api/am/revoke</span><span>GET /api/analytics</span><span>GET /api/logs</span>
+      <span>GET /api/health</span><span>POST /api/keys/generate</span><span>POST /api/am/send</span><span>POST /api/am/verif</span><span>GET /api/am/status</span><span>POST /api/am/renew</span><span>POST /api/am/revoke</span><span>GET /api/analytics</span><span>GET /api/logs</span>
+    </div>
+  </div>
+
+  <!-- LIVE STATS -->
+  <section class="section" style="padding-bottom:20px">
+    <div class="container">
+      <div class="stats-band" data-stagger>
+        <div class="card stat-box reveal"><div class="num" data-stat="users">0</div><div class="lbl">Pengguna terdaftar</div></div>
+        <div class="card stat-box reveal"><div class="num" data-stat="api_keys">0</div><div class="lbl">API Key dibuat</div></div>
+        <div class="card stat-box reveal"><div class="num" data-stat="requests">0</div><div class="lbl">API Request tercatat</div></div>
+        <div class="card stat-box card-yellow reveal"><div class="num" data-stat="premium_activations">0</div><div class="lbl" style="color:#151515">Aktivasi Premium</div></div>
+      </div>
+      <p class="muted small center" style="margin-top:14px">Angka di atas diambil langsung dari database AYAKA API (bukan angka statis).</p>
+    </div>
+  </section>
+
+  <!-- REST API -->
+  <section class="section" id="rest">
+    <div class="container rest-grid">
+      <div class="reveal reveal-left">
+        <span class="eyebrow">01 — REST API</span>
+        <h2 style="font-size:clamp(2rem,4.4vw,3.2rem);font-weight:900">Satu Base URL.<br>Respons JSON konsisten.</h2>
+        <p class="muted">Semua endpoint berada di bawah <code class="inline"><span data-base-url>https://YOUR-AYAKA-DOMAIN.vercel.app</span>/api</code>. Autentikasi aplikasi menggunakan header <code class="inline">X-API-Key</code> — tidak pernah lewat URL. Setiap respons memakai format yang sama dan HTTP status code yang benar (200, 201, 400, 401, 403, 404, 409, 422, 429, 500).</p>
+        <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:20px">
+<pre class="code"><span class="t-dim">// 200 OK</span>
+{
+  <span class="t-key">"success"</span>: <span class="t-num">true</span>,
+  <span class="t-key">"message"</span>: <span class="t-str">"Request successful"</span>,
+  <span class="t-key">"data"</span>: {},
+  <span class="t-key">"timestamp"</span>: <span class="t-str">"2026-11-16T10:00:00Z"</span>
+}</pre>
+<pre class="code"><span class="t-dim">// 401 Unauthorized</span>
+{
+  <span class="t-key">"success"</span>: <span class="t-num">false</span>,
+  <span class="t-key">"message"</span>: <span class="t-str">"Invalid API Key"</span>,
+  <span class="t-key">"error"</span>: {
+    <span class="t-key">"code"</span>: <span class="t-str">"INVALID_API_KEY"</span>
+  }
+}</pre>
+        </div>
+      </div>
+      <div class="endpoint-list reveal reveal-right" data-stagger>
+        <div class="endpoint"><span class="badge m-get">GET</span><code>/api/health<small>Status server &amp; database</small></code></div>
+        <div class="endpoint"><span class="badge m-get">GET</span><code>/api/user/profile<small>Profil pemilik API Key</small></code></div>
+        <div class="endpoint"><span class="badge m-post">POST</span><code>/api/keys/generate<small>Generate API Key baru</small></code></div>
+        <div class="endpoint"><span class="badge m-delete">DELETE</span><code>/api/keys/{id}<small>Revoke API Key seketika</small></code></div>
+        <div class="endpoint"><span class="badge m-post">POST</span><code>/api/am/send<small>Kirim Magic Link Premium via Resend</small></code></div>
+        <div class="endpoint"><span class="badge m-get">GET</span><code>/api/am/status<small>Cek status Premium</small></code></div>
+        <div class="endpoint"><span class="badge m-get">GET</span><code>/api/analytics<small>Statistik real-time akun</small></code></div>
+        <a class="btn" href="/documentation#endpoints" data-icon="book">Lihat semua endpoint</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">02 — Fitur</span>
+        <h2>Dibangun untuk produksi, bukan untuk demo.</h2>
+        <p class="muted">Setiap tombol terhubung ke backend FastAPI dan database Neon PostgreSQL sungguhan.</p>
+      </div>
+      <div class="grid features" data-stagger>
+        <article class="card card-hover feature wide reveal">
+          <div class="ficon" data-icon="key"></div>
+          <h3>API Key Management</h3>
+          <p class="muted">Generate key berformat <code class="inline">ayaka_live_…</code> dengan CSPRNG. Secret hanya tampil sekali, database hanya menyimpan HMAC-SHA256 berpepper.</p>
+          <ul><li>Nama, deskripsi, permission granular &amp; expiration date</li><li>Revoke instan, regenerate (rotasi), last used &amp; riwayat</li><li>Rate limit per key &amp; kuota bulanan per akun</li></ul>
+        </article>
+        <article class="card card-hover feature reveal">
+          <div class="ficon" data-icon="mail"></div>
+          <h3>Magic Link Premium</h3>
+          <p class="muted">Kirim tautan verifikasi lewat Resend. Token sekali pakai, di-hash, kedaluwarsa 15 menit. Aktivasi, perpanjangan, dan pencabutan Premium tercatat lengkap.</p>
+        </article>
+        <article class="card card-hover feature reveal">
+          <div class="ficon" data-icon="shield"></div>
+          <h3>Security</h3>
+          <p class="muted">Argon2id, cookie HttpOnly + Secure + SameSite, CSRF token, rate limiting, proteksi brute force, security headers, audit log, dan isolasi data antar pengguna.</p>
+        </article>
+        <article class="card card-hover feature reveal">
+          <div class="ficon" data-icon="chart"></div>
+          <h3>Real-Time Analytics</h3>
+          <p class="muted">Grafik request per menit/jam/hari, success vs failed, API Key dibuat, pengunjung, aktivasi Premium — diperbarui otomatis tiap 4 detik.</p>
+        </article>
+        <article class="card card-hover feature reveal">
+          <div class="ficon" data-icon="play"></div>
+          <h3>API Playground</h3>
+          <p class="muted">Coba endpoint langsung dari browser: pilih method, isi header X-API-Key &amp; JSON body, lihat status, waktu respons, dan respons lengkap.</p>
+        </article>
+        <article class="card card-hover feature wide reveal">
+          <div class="ficon" data-icon="hook"></div>
+          <h3>Webhooks, Logs &amp; Admin AYAKA Sync</h3>
+          <p class="muted">Webhook bertanda tangan HMAC untuk event key &amp; premium. Request log dengan filter, pencarian, pagination, dan export CSV. Admin dashboard dengan monitoring server, database, Resend, serta Maintenance Mode.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAMPLE -->
+  <section class="section" id="example">
+    <div class="container rest-grid">
+      <div class="reveal reveal-left">
+        <span class="eyebrow">03 — Contoh Penggunaan</span>
+        <h2 style="font-size:clamp(2rem,4.4vw,3.2rem);font-weight:900">Kirim Magic Link dalam 10 baris.</h2>
+        <p class="muted">Ganti Base URL dan API Key Anda, lalu jalankan. Contoh tersedia untuk JavaScript Fetch, PHP cURL, Python Requests, dan cURL.</p>
+        <div class="callout" style="margin-top:18px"><strong>Penting:</strong> API Key adalah secret. Jangan taruh di kode frontend publik — panggil AYAKA API dari server Anda dan simpan key di environment variable.</div>
+        <ol style="margin-top:20px;font-weight:600;padding-left:20px">
+          <li>Register &amp; login ke dashboard.</li>
+          <li>Buka <em style="font-style:normal;text-decoration:underline">API Key Manager</em> → Generate dengan permission <code class="inline">premium:send</code>.</li>
+          <li>Salin key (hanya tampil sekali) ke server Anda.</li>
+          <li>Panggil <code class="inline">POST /api/am/send</code>.</li>
+        </ol>
+      </div>
+      <div class="code-card reveal reveal-right" data-tabs="lang">
+        <div class="tabs" role="tablist">
+          <button class="tab" data-tab="js" role="tab">JavaScript</button>
+          <button class="tab" data-tab="php" role="tab">PHP</button>
+          <button class="tab" data-tab="py" role="tab">Python</button>
+          <button class="tab" data-tab="curl" role="tab">cURL</button>
+          <button class="tab tab-copy" type="button">Copy</button>
+        </div>
+<pre data-pane="js" data-code><code>const BASE_URL = "https://YOUR-AYAKA-DOMAIN.vercel.app";
+const API_KEY = process.env.AYAKA_API_KEY; // ayaka_live_...
+
+const res = await fetch(`${BASE_URL}/api/am/send`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+  body: JSON.stringify({ email: "user@example.com", plan: "premium" })
+});
+const result = await res.json();
+if (!res.ok) throw new Error(result.message);
+console.log(result.data); // { email, plan, expires_in: 900 }</code></pre>
+<pre data-pane="php" class="hidden" data-code><code>&lt;?php
+$baseUrl = "https://YOUR-AYAKA-DOMAIN.vercel.app";
+$apiKey  = getenv("AYAKA_API_KEY");
+
+$ch = curl_init($baseUrl . "/api/am/send");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER =&gt; true,
+    CURLOPT_POST =&gt; true,
+    CURLOPT_HTTPHEADER =&gt; ["Content-Type: application/json", "X-API-Key: " . $apiKey],
+    CURLOPT_POSTFIELDS =&gt; json_encode(["email" =&gt; "user@example.com", "plan" =&gt; "premium"]),
+    CURLOPT_TIMEOUT =&gt; 20,
+]);
+$result = json_decode(curl_exec($ch), true);
+echo curl_getinfo($ch, CURLINFO_HTTP_CODE), PHP_EOL;
+print_r($result["data"]);</code></pre>
+<pre data-pane="py" class="hidden" data-code><code>import os, requests
+
+BASE_URL = "https://YOUR-AYAKA-DOMAIN.vercel.app"
+API_KEY = os.environ["AYAKA_API_KEY"]
+
+r = requests.post(
+    f"{BASE_URL}/api/am/send",
+    headers={"X-API-Key": API_KEY},
+    json={"email": "user@example.com", "plan": "premium"},
+    timeout=20,
+)
+print(r.status_code, r.json())</code></pre>
+<pre data-pane="curl" class="hidden" data-code><code>curl -X POST "https://YOUR-AYAKA-DOMAIN.vercel.app/api/am/send" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ayaka_live_YOUR_SECRET_KEY" \
+  -d '{"email":"user@example.com","plan":"premium"}'</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCS PREVIEW -->
+  <section class="section" id="docs">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">04 — Dokumentasi Endpoint</span>
+        <h2>Endpoint utama AYAKA API</h2>
+      </div>
+      <div class="table-wrap reveal">
+        <table class="table">
+          <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Fungsi</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api/health</code></td><td>—</td><td>Status server</td></tr>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api</code></td><td>—</td><td>Informasi API</td></tr>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api/user/profile</code></td><td>profile:read</td><td>Profil pengguna</td></tr>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api/keys</code></td><td>keys:read</td><td>Daftar API Key</td></tr>
+            <tr><td><span class="badge m-post">POST</span></td><td><code>/api/keys/generate</code></td><td>Session</td><td>Generate API Key</td></tr>
+            <tr><td><span class="badge m-delete">DELETE</span></td><td><code>/api/keys/{id}</code></td><td>Session</td><td>Revoke API Key</td></tr>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api/keys/{id}</code></td><td>keys:read</td><td>Detail API Key</td></tr>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api/analytics</code></td><td>analytics:read</td><td>Statistik pengguna</td></tr>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api/logs</code></td><td>logs:read</td><td>Riwayat request</td></tr>
+            <tr><td><span class="badge m-get">GET</span></td><td><code>/api/docs</code></td><td>—</td><td>Dokumentasi API (JSON)</td></tr>
+            <tr><td><span class="badge m-post">POST</span></td><td><code>/api/am/send · verif · renew · revoke</code></td><td>premium:*</td><td>Magic Link Premium</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row" style="margin-top:20px"><a class="btn btn-dark" href="/documentation" data-icon="book">Buka dokumentasi lengkap</a><a class="btn" href="/api/swagger" data-icon="globe">OpenAPI / Swagger</a></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head reveal"><span class="eyebrow">05 — FAQ</span><h2>Pertanyaan yang sering diajukan</h2></div>
+      <div class="faq" data-stagger>
+        <details class="reveal"><summary>Apakah AYAKA API gratis digunakan?</summary><div class="faq-body">Ya. Setiap akun mendapat kuota bulanan (default 10.000 request) dan rate limit per API Key. Administrator AYAKA Sync dapat menyesuaikan kuota.</div></details>
+        <details class="reveal"><summary>Bagaimana jika saya kehilangan API Key?</summary><div class="faq-body">Secret hanya ditampilkan sekali dan tidak disimpan dalam bentuk mentah. Gunakan tombol <strong>Regenerate</strong> untuk membuat key baru — key lama langsung nonaktif.</div></details>
+        <details class="reveal"><summary>Apakah API Key boleh dipakai di JavaScript browser?</summary><div class="faq-body">Tidak disarankan. Kode browser bisa dibaca siapa saja. Panggil AYAKA API dari backend Anda (Node, PHP, Python) dan simpan key di environment variable server.</div></details>
+        <details class="reveal"><summary>Bagaimana Magic Link Premium bekerja?</summary><div class="faq-body">Aplikasi Anda memanggil <code class="inline">/api/am/send</code>. AYAKA API membuat token acak, menyimpan hash-nya, dan mengirim email via Resend. Saat pengguna mengklik <em style="font-style:normal">Verify Account</em>, Premium aktif. Token hanya bisa dipakai sekali dan kedaluwarsa 15 menit.</div></details>
+        <details class="reveal"><summary>Apakah data Premium antar developer bisa saling terlihat?</summary><div class="faq-body">Tidak. Setiap langganan Premium terikat pada pemilik API Key (owner_id). Developer lain tidak dapat membaca, memperpanjang, atau mencabut pelanggan Anda.</div></details>
+        <details class="reveal"><summary>Bagaimana pengunjung dihitung?</summary><div class="faq-body">Tanpa cookie pelacak. Kami memakai hash anonim harian (HMAC dari tanggal, IP, dan user-agent) sehingga refresh tidak dihitung sebagai pengunjung baru. Data disimpan maksimal 90 hari dan Do-Not-Track dihormati.</div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWNER -->
+  <section class="section" id="owner">
+    <div class="container">
+      <div class="card owner-card reveal">
+        <div class="owner-avatar">OS</div>
+        <div>
+          <span class="eyebrow">Owner</span>
+          <h2 style="font-size:2.2rem;font-weight:900;margin-bottom:6px">OLPI STORE</h2>
+          <p class="muted" style="margin:0">AYAKA API dikembangkan dan dikelola oleh OLPI STORE. Sistem dijalankan oleh <strong>AYAKA Sync</strong> dengan administrator <strong>Ayaka Sync</strong>.</p>
+          <p class="small" style="margin-top:8px">Kontak admin: <a href="mailto:olpieditz336@gmail.com">olpieditz336@gmail.com</a></p>
+        </div>
+        <div class="owner-links">
+          <a class="btn btn-dark" href="https://github.com/olpigiantara-design" target="_blank" rel="noopener noreferrer" data-icon="github">GitHub</a>
+          <a class="btn btn-primary" href="https://whatsapp.com/channel/0029VbEbK4dHgZWWJmXFP52o" target="_blank" rel="noopener noreferrer" data-icon="whatsapp">WhatsApp Channel</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:20px">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2>Bangun ekosistem API Anda hari ini.</h2>
+        <p style="font-size:1.1rem;opacity:.85">Gratis untuk memulai. Generate API Key pertama Anda dalam kurang dari satu menit.</p>
+        <div class="row" style="justify-content:center;margin-top:24px">
+          <a class="btn btn-primary btn-lg" href="/register" data-icon="bolt">Get Started</a>
+          <a class="btn btn-lg" href="/documentation" data-icon="book">Explore Documentation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="/"><span class="logo-mark">AYAKA</span><span class="logo-text">API</span></a>
+        <p class="muted" style="margin-top:14px;max-width:320px">REST API Management Platform — API Key, Magic Link Premium, dan analytics real-time.</p>
+        <p class="powered">Powered by <strong>AYAKA Sync</strong></p>
+      </div>
+      <div><h4>Produk</h4><ul><li><a href="/documentation">Dokumentasi</a></li><li><a href="/dashboard#playground">API Playground</a></li><li><a href="/status">Status API</a></li><li><a href="/api/swagger">OpenAPI</a></li></ul></div>
+      <div><h4>Akun</h4><ul><li><a href="/register">Register</a></li><li><a href="/login">Login</a></li><li><a href="/dashboard">Dashboard</a></li><li><a href="/forgot-password">Lupa password</a></li></ul></div>
+      <div><h4>OLPI STORE</h4><ul><li><a href="https://github.com/olpigiantara-design" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="https://whatsapp.com/channel/0029VbEbK4dHgZWWJmXFP52o" target="_blank" rel="noopener noreferrer">WhatsApp Channel</a></li><li><a href="mailto:olpieditz336@gmail.com">olpieditz336@gmail.com</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© <span data-year>2026</span> AYAKA API · Owner: OLPI STORE · Admin: Ayaka Sync</span><span class="powered">Powered by <strong>AYAKA Sync</strong></span></div>
+  </div>
+</footer>
+<script src="/js/app.js"></script>
+<script src="/js/landing.js"></script>
+</body>
+</html>

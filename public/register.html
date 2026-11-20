@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register — AYAKA API</title>
+  <meta name="theme-color" content="#FFD600">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="/js/theme.js"></script>
+</head>
+<body data-page="register">
+<main class="auth-shell">
+  <aside class="auth-side">
+    <a class="logo" href="/"><span class="logo-mark">AYAKA</span><span class="logo-text">API</span></a>
+    <div>
+      <h2>Start building.<br>Ship faster.</h2>
+      <div class="chips"><span class="chip">X-API-Key</span><span class="chip">Magic Link</span><span class="chip">Live Analytics</span></div>
+    </div>
+    <p class="powered" style="position:relative;z-index:2">Powered by <strong>AYAKA Sync</strong> · Owner: OLPI STORE</p>
+    <div class="big-shape" aria-hidden="true"></div>
+  </aside>
+  <section class="auth-main">
+    <div class="auth-card">
+      <div class="auth-top"><a class="logo" href="/"><span class="logo-mark">AYAKA</span><span class="logo-text">API</span></a><button class="btn btn-icon btn-ghost" data-theme-toggle type="button"></button></div>
+      <div class="card">
+        <h1>Register</h1>
+        <p class="muted">Buat akun AYAKA API gratis.</p>
+        <div class="form-alert hidden" data-alert role="alert"></div>
+        <form id="register-form" novalidate>
+          <div class="two-col">
+            <div class="field"><label for="username">Username</label><input class="input" id="username" name="username" autocomplete="username" required minlength="3" maxlength="32" pattern="[A-Za-z0-9_]{3,32}"><span class="error-text" data-err="username"></span></div>
+            <div class="field"><label for="full_name">Nama lengkap</label><input class="input" id="full_name" name="full_name" autocomplete="name" required minlength="2" maxlength="120"><span class="error-text" data-err="full_name"></span></div>
+          </div>
+          <div class="field"><label for="email">Email</label><input class="input" id="email" name="email" type="email" autocomplete="email" required maxlength="254"><span class="error-text" data-err="email"></span></div>
+          <div class="field"><label for="password">Password</label>
+            <div class="pw-wrap"><input class="input" id="password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128"><button class="pw-toggle" type="button" data-pw-toggle aria-label="Tampilkan password" data-icon="eye"></button></div>
+            <div class="pw-meter" aria-hidden="true"><span data-pw-meter></span></div>
+            <span class="hint">Minimal 8 karakter, huruf besar, huruf kecil, dan angka.</span>
+            <span class="error-text" data-err="password"></span></div>
+          <div class="field"><label for="confirm_password">Konfirmasi password</label><input class="input" id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" required maxlength="128"><span class="error-text" data-err="confirm_password"></span></div>
+          <button class="btn btn-primary btn-lg" type="submit" style="width:100%">Buat akun →</button>
+        </form>
+        <p class="switch">Sudah punya akun? <a href="/login">Login</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="/js/app.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dokumentasi — AYAKA API</title>
+  <meta name="description" content="AYAKA API: platform REST API Management dengan API Key Manager, Magic Link Premium, keamanan berlapis, dan analytics real-time. Powered by AYAKA Sync · OLPI STORE.">
+  <meta name="theme-color" content="#FFD600">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="/js/theme.js"></script>
+</head>
+<body data-page="docs">
+<a class="skip-link" href="#docs-main">Lewati ke konten</a>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="/" aria-label="AYAKA API beranda"><span class="logo-mark">AYAKA</span><span class="logo-text">API</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/#rest">REST API</a></li>
+      <li><a href="/#features">Fitur</a></li>
+      <li><a href="/#example">Contoh</a></li>
+      <li><a href="/documentation">Dokumentasi</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+      <li><a href="/status">Status</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-icon btn-ghost theme-toggle" data-theme-toggle type="button"></button>
+      <span data-auth-slot class="row" style="gap:8px">
+        <a class="btn btn-sm btn-hide-sm" href="/login">Login</a>
+        <a class="btn btn-primary btn-sm" href="/register">Register</a>
+      </span>
+      <button class="btn btn-icon nav-burger" type="button" aria-label="Menu" aria-controls="nav-links" aria-expanded="false" data-icon="menu"></button>
+    </div>
+  </div>
+</header>
+<main id="docs-main" class="container">
+  <div data-announcements></div>
+  <div class="docs-layout">
+    <aside class="docs-nav card" aria-label="Navigasi dokumentasi">
+      <div class="docs-search"><span data-icon="search"></span><input class="input" id="docs-q" type="search" placeholder="Cari dokumentasi…" aria-label="Cari dokumentasi" autocomplete="off"></div>
+      <p class="small muted hidden" id="docs-noresult">Tidak ada hasil.</p>
+      <h5>Mulai</h5>
+      <a href="#intro">Pengantar</a><a href="#quickstart">Quickstart</a><a href="#auth">Autentikasi</a><a href="#permissions">Permissions</a><a href="#format">Format Respons</a><a href="#limits">Rate Limit &amp; Kuota</a><a href="#endpoints">Daftar Endpoint</a>
+      <h5>Contoh Request</h5>
+      <a href="#ex-get">GET — Profil</a><a href="#ex-keys">GET — API Keys</a><a href="#ex-post">POST — Kirim Magic Link</a><a href="#ex-delete">DELETE — Revoke Key</a>
+      <h5>Magic Link Premium</h5>
+      <a href="#ml-flow">Alur Magic Link</a><a href="#ml-verify">Verify Token</a><a href="#ml-status">Cek Status</a><a href="#ml-renew">Renew</a><a href="#ml-revoke">Revoke</a>
+      <h5>Lainnya</h5>
+      <a href="#webhooks">Webhooks</a><a href="#errors">Kode Error</a><a href="#security">Keamanan</a>
+    </aside>
+    <div class="docs-content">
+      <section id="intro" data-doc>
+        <span class="eyebrow">AYAKA API · v1</span>
+        <h1 style="font-size:clamp(2rem,5vw,3.2rem)">Dokumentasi AYAKA API</h1>
+        <p class="hero-lead">REST API berbasis JSON untuk mengelola API Key, mengirim Magic Link Premium lewat email, dan membaca analytics/logs akun Anda. Base URL:</p>
+        <div class="code-card"><div class="tabs"><span class="tab" aria-selected="true">Base URL</span><button class="tab" type="button" data-copy="#base-url-val">Copy</button></div><pre><code id="base-url-val" data-base-url>https://YOUR-AYAKA-DOMAIN.vercel.app</code></pre></div>
+        <p class="small muted" style="margin-top:12px">Spesifikasi OpenAPI interaktif tersedia di <a href="/api/swagger">/api/swagger</a> · JSON ringkas di <a href="/api/docs">/api/docs</a> · Powered by AYAKA Sync.</p>
+      </section>
+      <section id="quickstart" data-doc>
+        <h2>Quickstart</h2>
+        <ol>
+          <li><a href="/register">Register</a> akun lalu login ke dashboard.</li>
+          <li>Buka <strong>API Key Manager</strong> → <strong>Generate API Key</strong>, pilih permission yang dibutuhkan.</li>
+          <li>Salin API Key (<code class="inline">ayaka_live_…</code>). Key hanya ditampilkan <strong>satu kali</strong>; simpan di environment variable server Anda.</li>
+          <li>Kirim request dengan header <code class="inline">X-API-Key</code>. Coba langsung di <a href="/dashboard#playground">API Playground</a>.</li>
+        </ol>
+      </section>
+      <section id="auth" data-doc>
+        <h2>Autentikasi</h2>
+        <p>Semua endpoint yang dilindungi menerima API Key <strong>hanya</strong> melalui header HTTP:</p>
+        <div class="code-card"><pre><code>X-API-Key: ayaka_live_YOUR_SECRET_KEY</code></pre></div>
+        <div class="callout danger" style="margin-top:14px"><strong>Jangan kirim API Key lewat URL.</strong> Request seperti <code class="inline">?api_key=…</code> ditolak dengan <code class="inline">400 API_KEY_IN_URL</code> karena URL tercatat di log server, history browser, dan referrer.</div>
+        <p>API Key disimpan di database sebagai hash HMAC-SHA256 (dengan pepper server). AYAKA tidak bisa menampilkan ulang key Anda — jika hilang, regenerate dari dashboard.</p>
+        <p>Endpoint manajemen sensitif seperti <code class="inline">POST /api/keys/generate</code> hanya dapat dipanggil dari dashboard yang sudah login (cookie sesi HttpOnly + token CSRF), bukan dengan API Key.</p>
+      </section>
+      <section id="permissions" data-doc>
+        <h2>Permissions</h2>
+        <p>Setiap API Key memiliki daftar permission. Request ke endpoint tanpa permission yang sesuai mendapat <code class="inline">403 INSUFFICIENT_PERMISSION</code>.</p>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Permission</th><th>Mengizinkan</th></tr></thead><tbody>
+<tr><td><code>profile:read</code></td><td>GET /api/user/profile</td></tr>
+<tr><td><code>keys:read</code></td><td>GET /api/keys, GET /api/keys/{id}</td></tr>
+<tr><td><code>keys:revoke</code></td><td>DELETE /api/keys/{id}</td></tr>
+<tr><td><code>analytics:read</code></td><td>GET /api/analytics</td></tr>
+<tr><td><code>logs:read</code></td><td>GET /api/logs</td></tr>
+<tr><td><code>premium:send</code></td><td>POST /api/am/send</td></tr>
+<tr><td><code>premium:status</code></td><td>GET /api/am/status</td></tr>
+<tr><td><code>premium:renew</code></td><td>POST /api/am/renew</td></tr>
+<tr><td><code>premium:revoke</code></td><td>POST /api/am/revoke</td></tr>
+        </tbody></table></div>
+      </section>
+      <section id="format" data-doc>
+        <h2>Format Respons</h2>
+        <p>Semua respons JSON memakai format yang konsisten.</p>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+          <div class="code-card"><div class="tabs"><span class="tab" aria-selected="true">Berhasil</span></div><pre><code>{
+  "success": true,
+  "message": "Request successful",
+  "data": {},
+  "timestamp": "2026-01-01T00:00:00Z"
+}</code></pre></div>
+          <div class="code-card"><div class="tabs"><span class="tab" aria-selected="true">Gagal</span></div><pre><code>{
+  "success": false,
+  "message": "Invalid API Key",
+  "error": { "code": "INVALID_API_KEY" },
+  "timestamp": "2026-01-01T00:00:00Z"
+}</code></pre></div>
+        </div>
+        <p class="small muted">Setiap respons juga menyertakan header <code class="inline">X-Request-ID</code> — sebutkan ID ini saat menghubungi support.</p>
+      </section>
+      <section id="limits" data-doc>
+        <h2>Rate Limit &amp; Kuota</h2>
+        <p>Setiap API Key memiliki batas request per menit (default diatur admin, dapat disesuaikan per key) dan akun memiliki kuota bulanan. Header respons:</p>
+        <ul><li><code class="inline">X-RateLimit-Limit</code> — batas per menit</li><li><code class="inline">X-RateLimit-Remaining</code> — sisa request di jendela saat ini</li><li><code class="inline">Retry-After</code> — detik menunggu saat menerima 429</li></ul>
+        <p>Pengiriman Magic Link dibatasi 5 kali per 15 menit untuk email yang sama.</p>
+      </section>
+      <section id="endpoints" data-doc>
+        <h2>Daftar Endpoint</h2>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Permission</th><th>Fungsi</th></tr></thead><tbody>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/health</code></td><td>Publik</td><td><code>—</code></td><td>Status server & database</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api</code></td><td>Publik</td><td><code>—</code></td><td>Informasi API</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/docs</code></td><td>Publik</td><td><code>—</code></td><td>Daftar endpoint (JSON)</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/user/profile</code></td><td>X-API-Key / sesi</td><td><code>profile:read</code></td><td>Profil pemilik API Key</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/keys</code></td><td>X-API-Key / sesi</td><td><code>keys:read</code></td><td>Daftar API Key (metadata)</td></tr>
+<tr><td><span class="badge m-post">POST</span></td><td><code>/api/keys/generate</code></td><td>Sesi dashboard</td><td><code>—</code></td><td>Generate API Key baru</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/keys/{id}</code></td><td>X-API-Key / sesi</td><td><code>keys:read</code></td><td>Detail API Key</td></tr>
+<tr><td><span class="badge m-delete">DELETE</span></td><td><code>/api/keys/{id}</code></td><td>X-API-Key / sesi</td><td><code>keys:revoke</code></td><td>Revoke API Key</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/analytics</code></td><td>X-API-Key / sesi</td><td><code>analytics:read</code></td><td>Statistik akun</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/logs</code></td><td>X-API-Key / sesi</td><td><code>logs:read</code></td><td>Request logs akun</td></tr>
+<tr><td><span class="badge m-post">POST</span></td><td><code>/api/am/send</code></td><td>X-API-Key</td><td><code>premium:send</code></td><td>Kirim Magic Link Premium</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/am/verif?token=…</code></td><td>Publik (dari email)</td><td><code>—</code></td><td>Halaman konfirmasi Magic Link</td></tr>
+<tr><td><span class="badge m-post">POST</span></td><td><code>/api/am/verif</code></td><td>Publik (token)</td><td><code>—</code></td><td>Verifikasi token & aktifkan Premium</td></tr>
+<tr><td><span class="badge m-get">GET</span></td><td><code>/api/am/status?email=…</code></td><td>X-API-Key</td><td><code>premium:status</code></td><td>Cek status Premium</td></tr>
+<tr><td><span class="badge m-post">POST</span></td><td><code>/api/am/renew</code></td><td>X-API-Key</td><td><code>premium:renew</code></td><td>Perpanjang Premium</td></tr>
+<tr><td><span class="badge m-post">POST</span></td><td><code>/api/am/revoke</code></td><td>X-API-Key</td><td><code>premium:revoke</code></td><td>Cabut Premium</td></tr>
+        </tbody></table></div>
+      </section>
+
+      <div class="callout" data-doc style="margin-bottom:28px"><strong>Placeholder:</strong> ganti <code class="inline">ayaka_live_YOUR_SECRET_KEY</code> dengan API Key Anda dan <code class="inline">user@example.com</code> dengan email nyata. Base URL pada contoh otomatis mengikuti domain halaman ini. Simpan key di environment variable server — jangan pernah di kode frontend publik.</div>
+
+      <section id="ex-get" data-doc><h2>GET — Profil</h2><p>Membaca profil pemilik API Key. Permission: <code class="inline">profile:read</code>.</p><div data-example="profile"></div></section>
+      <section id="ex-keys" data-doc><h2>GET — Daftar API Key</h2><p>Metadata seluruh key milik akun (tanpa secret). Permission: <code class="inline">keys:read</code>.</p><div data-example="keys"></div></section>
+      <section id="ex-post" data-doc><h2>POST — Kirim Magic Link Premium</h2><p>Mengirim email berisi tombol <strong>Verify Account</strong> ke pengguna. Token berlaku 15 menit dan hanya bisa dipakai satu kali. Permission: <code class="inline">premium:send</code>.</p>
+        <p class="small">Body: <code class="inline">email</code> (wajib), <code class="inline">plan</code> (<code class="inline">premium</code>=30 hari, <code class="inline">premium_quarterly</code>=90, <code class="inline">premium_yearly</code>=365), <code class="inline">duration_days</code> (opsional 1–365), <code class="inline">name</code> (opsional).</p><div data-example="send"></div></section>
+      <section id="ex-delete" data-doc><h2>DELETE — Revoke API Key</h2><p>Mencabut key milik akun Anda secara permanen; berlaku seketika. Permission: <code class="inline">keys:revoke</code>.</p><div data-example="delete"></div></section>
+
+      <section id="ml-flow" data-doc>
+        <h2>Alur Magic Link Premium</h2>
+        <ol>
+          <li>Server Anda memanggil <code class="inline">POST /api/am/send</code> dengan email pengguna.</li>
+          <li>AYAKA Sync membuat token acak (disimpan sebagai hash SHA-256) dan mengirim email via Resend.</li>
+          <li>Pengguna menekan <strong>Verify Account</strong> → halaman konfirmasi <code class="inline">/api/am/verif?token=…</code> → tombol konfirmasi mengirim <code class="inline">POST</code> (mencegah pemindai link email mengonsumsi token).</li>
+          <li>Premium aktif; email konfirmasi aktivasi dikirim, dan webhook <code class="inline">premium.activated</code> dipicu.</li>
+          <li>Server Anda mengecek <code class="inline">GET /api/am/status</code>, memperpanjang dengan <code class="inline">/renew</code>, atau mencabut dengan <code class="inline">/revoke</code>.</li>
+        </ol>
+      </section>
+      <section id="ml-verify" data-doc><h2>Verify Token</h2><p>Biasanya dilakukan otomatis lewat tombol di email. Jika Anda membangun halaman verifikasi sendiri, kirim token ke endpoint ini (tidak butuh API Key).</p><div data-example="verify"></div></section>
+      <section id="ml-status" data-doc><h2>Cek Status Premium</h2><p>Permission: <code class="inline">premium:status</code>. Nilai <code class="inline">status</code>: <code class="inline">active</code>, <code class="inline">expired</code>, <code class="inline">revoked</code>, atau <code class="inline">none</code>.</p><div data-example="status"></div></section>
+      <section id="ml-renew" data-doc><h2>Renew Premium</h2><p>Menambah durasi (hari) dari tanggal kedaluwarsa saat ini atau dari sekarang jika sudah lewat. Permission: <code class="inline">premium:renew</code>.</p><div data-example="renew"></div></section>
+      <section id="ml-revoke" data-doc><h2>Revoke Premium</h2><p>Mencabut Premium seketika dan mengirim email pemberitahuan. Permission: <code class="inline">premium:revoke</code>.</p><div data-example="revoke"></div></section>
+
+      <section id="webhooks" data-doc>
+        <h2>Webhooks</h2>
+        <p>Atur URL HTTPS di <a href="/dashboard#webhooks">Webhook Settings</a>. AYAKA mengirim <code class="inline">POST</code> JSON untuk event: <code class="inline">key.created</code>, <code class="inline">key.revoked</code>, <code class="inline">key.regenerated</code>, <code class="inline">premium.link_sent</code>, <code class="inline">premium.activated</code>, <code class="inline">premium.renewed</code>, <code class="inline">premium.revoked</code>.</p>
+        <p>Header: <code class="inline">X-Ayaka-Event</code>, <code class="inline">X-Ayaka-Timestamp</code>, <code class="inline">X-Ayaka-Signature: sha256=HMAC_SHA256(secret, timestamp + "." + rawBody)</code>. Tolak request dengan timestamp lebih dari 5 menit.</p>
+        <div data-example="webhook"></div>
+      </section>
+      <section id="errors" data-doc>
+        <h2>Kode Error</h2>
+        <div class="table-wrap"><table class="table"><thead><tr><th>HTTP</th><th>error.code</th><th>Arti</th></tr></thead><tbody>
+<tr><td><strong>400</strong></td><td><code>API_KEY_IN_URL</code></td><td>API Key dikirim lewat URL/query. Gunakan header X-API-Key.</td></tr>
+<tr><td><strong>400</strong></td><td><code>INVALID_TOKEN</code></td><td>Token Magic Link tidak valid.</td></tr>
+<tr><td><strong>401</strong></td><td><code>API_KEY_REQUIRED</code></td><td>Header X-API-Key tidak disertakan.</td></tr>
+<tr><td><strong>401</strong></td><td><code>INVALID_API_KEY</code></td><td>API Key salah / tidak terdaftar.</td></tr>
+<tr><td><strong>401</strong></td><td><code>API_KEY_REVOKED</code></td><td>API Key sudah dicabut.</td></tr>
+<tr><td><strong>401</strong></td><td><code>API_KEY_EXPIRED</code></td><td>API Key melewati tanggal kedaluwarsa.</td></tr>
+<tr><td><strong>403</strong></td><td><code>INSUFFICIENT_PERMISSION</code></td><td>API Key tidak memiliki permission yang dibutuhkan.</td></tr>
+<tr><td><strong>403</strong></td><td><code>SESSION_REQUIRED</code></td><td>Endpoint hanya dapat dipakai dari dashboard (sesi login).</td></tr>
+<tr><td><strong>403</strong></td><td><code>ACCOUNT_SUSPENDED</code></td><td>Akun pemilik ditangguhkan admin.</td></tr>
+<tr><td><strong>404</strong></td><td><code>NOT_FOUND / SUBSCRIPTION_NOT_FOUND</code></td><td>Resource tidak ditemukan atau bukan milik Anda.</td></tr>
+<tr><td><strong>409</strong></td><td><code>TOKEN_ALREADY_USED / ALREADY_REVOKED</code></td><td>Status sudah berubah sebelumnya.</td></tr>
+<tr><td><strong>410</strong></td><td><code>TOKEN_EXPIRED</code></td><td>Magic Link kedaluwarsa.</td></tr>
+<tr><td><strong>413</strong></td><td><code>PAYLOAD_TOO_LARGE</code></td><td>Body lebih dari 1 MB.</td></tr>
+<tr><td><strong>422</strong></td><td><code>VALIDATION_ERROR / INVALID_EMAIL / INVALID_PLAN</code></td><td>Input tidak valid — lihat error.details.</td></tr>
+<tr><td><strong>429</strong></td><td><code>RATE_LIMITED / QUOTA_EXCEEDED</code></td><td>Terlalu banyak request (lihat header Retry-After) atau kuota bulanan habis.</td></tr>
+<tr><td><strong>502</strong></td><td><code>EMAIL_DELIVERY_FAILED</code></td><td>Resend gagal mengirim email.</td></tr>
+<tr><td><strong>503</strong></td><td><code>MAINTENANCE_MODE / DATABASE_UNAVAILABLE</code></td><td>Sistem sedang maintenance atau database tidak tersedia.</td></tr>
+        </tbody></table></div>
+      </section>
+      <section id="security" data-doc>
+        <h2>Keamanan</h2>
+        <ul>
+          <li>Panggil AYAKA API dari <strong>backend</strong> Anda. API Key di JavaScript browser dapat dibaca siapa pun.</li>
+          <li>Berikan permission seminimal mungkin dan gunakan tanggal kedaluwarsa.</li>
+          <li>Rotasi key secara berkala (Regenerate) dan revoke key yang bocor seketika.</li>
+          <li>Verifikasi signature setiap webhook sebelum memprosesnya.</li>
+          <li>AYAKA tidak pernah mencatat API Key, token, atau password di request logs.</li>
+        </ul>
+        <div class="callout"><strong>Butuh bantuan?</strong> Hubungi OLPI STORE di <a href="mailto:olpieditz336@gmail.com">olpieditz336@gmail.com</a> atau <a href="https://whatsapp.com/channel/0029VbEbK4dHgZWWJmXFP52o" target="_blank" rel="noopener noreferrer">WhatsApp Channel</a>.</div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="/"><span class="logo-mark">AYAKA</span><span class="logo-text">API</span></a>
+        <p class="muted" style="margin-top:14px;max-width:320px">REST API Management Platform — API Key, Magic Link Premium, dan analytics real-time.</p>
+        <p class="powered">Powered by <strong>AYAKA Sync</strong></p>
+      </div>
+      <div><h4>Produk</h4><ul><li><a href="/documentation">Dokumentasi</a></li><li><a href="/dashboard#playground">API Playground</a></li><li><a href="/status">Status API</a></li><li><a href="/api/swagger">OpenAPI</a></li></ul></div>
+      <div><h4>Akun</h4><ul><li><a href="/register">Register</a></li><li><a href="/login">Login</a></li><li><a href="/dashboard">Dashboard</a></li><li><a href="/forgot-password">Lupa password</a></li></ul></div>
+      <div><h4>OLPI STORE</h4><ul><li><a href="https://github.com/olpigiantara-design" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="https://whatsapp.com/channel/0029VbEbK4dHgZWWJmXFP52o" target="_blank" rel="noopener noreferrer">WhatsApp Channel</a></li><li><a href="mailto:olpieditz336@gmail.com">olpieditz336@gmail.com</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© <span data-year>2026</span> AYAKA API · Owner: OLPI STORE · Admin: Ayaka Sync</span><span class="powered">Powered by <strong>AYAKA Sync</strong></span></div>
+  </div>
+</footer>
+<script src="/js/app.js"></script>
+<script src="/js/docs.js"></script>
+</body>
+</html>

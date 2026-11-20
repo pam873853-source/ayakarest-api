@@ -1,0 +1,1 @@
+{ "name": "ayaka-api-example", "private": true, "type": "module", "scripts": { "start": "node ayaka-client.js" } }

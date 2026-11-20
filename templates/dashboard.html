@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="id" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard — AYAKA API</title>
+  <meta name="description" content="AYAKA API: platform REST API Management dengan API Key Manager, Magic Link Premium, keamanan berlapis, dan analytics real-time. Powered by AYAKA Sync · OLPI STORE.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#FFD600">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="/js/theme.js"></script>
+</head>
+<body class="app" data-guard="auth" data-page="dashboard" data-track="off">
+<a class="skip-link" href="#view-root">Lewati ke konten</a>
+<div class="app-shell" id="shell">
+  <aside class="sidebar" id="sidebar" aria-label="Navigasi dashboard">
+    <div class="sb-head">
+      <a class="logo" href="/" aria-label="AYAKA API"><span class="logo-mark">AYAKA</span><span class="logo-text">API</span></a>
+      <button class="btn btn-icon btn-sm" type="button" id="sb-collapse" aria-label="Ciutkan sidebar" data-icon="collapse"></button>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-group">Utama</div>
+      <a class="sb-link" href="#overview" data-nav="overview" data-tip="Overview"><span data-icon="home"></span><span class="sb-label">Overview</span></a>
+      <a class="sb-link" href="#keys" data-nav="keys" data-tip="API Key Manager"><span data-icon="key"></span><span class="sb-label">API Key Manager</span></a>
+      <a class="sb-link" href="#docs" data-nav="docs" data-tip="API Documentation"><span data-icon="book"></span><span class="sb-label">API Documentation</span></a>
+      <a class="sb-link" href="#playground" data-nav="playground" data-tip="API Playground"><span data-icon="play"></span><span class="sb-label">API Playground</span></a>
+      <a class="sb-link" href="#premium" data-nav="premium" data-tip="Magic Link Premium"><span data-icon="spark"></span><span class="sb-label">Magic Link Premium</span></a>
+      <div class="sb-group">Insight</div>
+      <a class="sb-link" href="#analytics" data-nav="analytics" data-tip="Analytics"><span data-icon="chart"></span><span class="sb-label">Analytics</span></a>
+      <a class="sb-link" href="#logs" data-nav="logs" data-tip="Request Logs"><span data-icon="list"></span><span class="sb-label">Request Logs</span></a>
+      <a class="sb-link" href="#webhooks" data-nav="webhooks" data-tip="Webhook Settings"><span data-icon="hook"></span><span class="sb-label">Webhook Settings</span></a>
+      <div class="sb-group">Akun</div>
+      <a class="sb-link" href="#account" data-nav="account" data-tip="Account Settings"><span data-icon="user"></span><span class="sb-label">Account Settings</span></a>
+      <a class="sb-link" href="#security" data-nav="security" data-tip="Security"><span data-icon="shield"></span><span class="sb-label">Security</span></a>
+      <a class="sb-link" href="#help" data-nav="help" data-tip="Help Center"><span data-icon="help"></span><span class="sb-label">Help Center</span></a>
+      <a class="sb-link hidden" href="/admin" id="sb-admin" data-tip="Admin Panel"><span data-icon="settings"></span><span class="sb-label">Admin Panel</span></a>
+      <button class="sb-link" type="button" data-logout data-tip="Logout"><span data-icon="logout"></span><span class="sb-label">Logout</span></button>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-user"><span class="avatar" id="sb-avatar">A</span><div style="min-width:0"><strong id="sb-name" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">…</strong><span class="small muted" id="sb-email" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></span></div></div>
+      <p class="powered small" style="margin:0">Powered by <strong>AYAKA Sync</strong></p>
+    </div>
+  </aside>
+  <div class="sb-overlay" data-sb-close></div>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="row" style="gap:10px;flex-wrap:nowrap;min-width:0">
+        <button class="btn btn-icon btn-sm mobile-only" type="button" id="sb-open" aria-label="Buka menu" data-icon="menu"></button>
+        <div style="min-width:0"><div class="crumb">AYAKA API · Dashboard</div><h1 id="view-title">Overview</h1></div>
+      </div>
+      <div class="row" style="gap:8px;flex-wrap:nowrap">
+        <span class="live" id="live" title="Data diperbarui otomatis"><i></i><span>LIVE · <time id="last-update">—</time></span></span>
+        <button class="btn btn-icon btn-sm" type="button" data-theme-toggle aria-label="Ganti tema"></button>
+        <button class="btn btn-icon btn-sm bell" type="button" id="bell" aria-label="Notifikasi" aria-expanded="false"><span data-icon="bell"></span><span class="dot hidden" id="bell-dot">0</span></button>
+      </div>
+    </header>
+
+    <div class="card notif-panel hidden" id="notif-panel" role="dialog" aria-label="Notifikasi">
+      <div class="notif-head"><h3>Notifikasi</h3><div class="row" style="gap:6px"><button class="btn btn-sm" type="button" id="notif-readall">Tandai dibaca</button><button class="btn btn-icon btn-sm" type="button" id="notif-close" aria-label="Tutup" data-icon="x"></button></div></div>
+      <div id="notif-list"><div class="notif-item"><span class="skeleton" style="height:40px"></span></div></div>
+    </div>
+
+    <div id="view-root">
+      <div data-announcements></div>
+
+      <!-- OVERVIEW -->
+      <section class="view" data-view="overview" hidden>
+        <div class="view-head"><div><h2>Halo, <span id="ov-name">developer</span>.</h2><p>Ringkasan real-time akun AYAKA API Anda.</p></div>
+          <div class="row"><a class="btn btn-primary" href="#keys" data-icon="plus">Generate API Key</a><a class="btn" href="#playground" data-icon="play">Playground</a></div></div>
+        <div class="kpis" id="ov-kpis">
+          <div class="card kpi"><span class="k-icon" data-icon="bolt"></span><div class="k-label">Total Request</div><div class="k-value" data-kpi="api_requests">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="check"></span><div class="k-label">Berhasil</div><div class="k-value" data-kpi="requests_success">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="x"></span><div class="k-label">Gagal</div><div class="k-value" data-kpi="requests_failed">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="key"></span><div class="k-label">API Key Aktif</div><div class="k-value" data-kpi="api_keys_active">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="spark"></span><div class="k-label">Premium Aktif</div><div class="k-value" data-kpi="premium_active">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="server"></span><div class="k-label">Rata-rata Respons</div><div class="k-value"><span data-kpi="avg_response_ms">—</span><small style="font-size:1rem"> ms</small></div></div>
+        </div>
+        <div class="split">
+          <div class="card chart-card"><h3>Request 24 jam terakhir</h3><div class="chart-box"><canvas id="ov-chart" aria-label="Grafik request per jam"></canvas></div></div>
+          <div class="stack" style="display:grid;gap:20px">
+            <div class="card" style="padding:18px"><h3 style="margin-top:0">Kuota bulan ini</h3>
+              <div class="row between"><strong class="mono" id="quota-used">—</strong><span class="muted small" id="quota-total"></span></div>
+              <div class="pw-meter" style="height:16px;margin-top:10px"><span id="quota-bar" style="width:0%"></span></div>
+              <p class="small muted" id="quota-left" style="margin:8px 0 0"></p></div>
+            <div class="card" style="padding:18px"><h3 style="margin-top:0">Request terbaru</h3><ul class="list-plain" id="ov-recent"><li class="skeleton" style="height:40px"></li></ul>
+              <a class="btn btn-sm" href="#logs" style="margin-top:12px">Semua logs →</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- API KEYS -->
+      <section class="view" data-view="keys" hidden>
+        <div class="view-head"><div><h2>API Key Manager</h2><p>Key ditampilkan <strong>satu kali</strong> saat dibuat. Yang tersimpan hanya hash HMAC-SHA256.</p></div>
+          <button class="btn btn-primary" type="button" id="key-new" data-icon="plus">Generate API Key</button></div>
+        <div class="toolbar">
+          <div class="seg" role="group" aria-label="Filter status" id="key-filter"><button class="on" data-status="">Semua</button><button data-status="active">Active</button><button data-status="expired">Expired</button><button data-status="revoked">Revoked</button></div>
+          <span class="muted small" id="key-counts"></span>
+        </div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Nama</th><th>Key</th><th>Status</th><th>Permission</th><th>Dipakai</th><th>Terakhir dipakai</th><th>Kedaluwarsa</th><th>Aksi</th></tr></thead>
+          <tbody id="key-rows"><tr><td colspan="8"><div class="skeleton" style="height:36px"></div></td></tr></tbody></table></div>
+        <h3 style="margin-top:28px">Riwayat aktivitas key</h3>
+        <ul class="list-plain" id="key-history"><li class="muted">Memuat…</li></ul>
+      </section>
+
+      <!-- DOCS -->
+      <section class="view" data-view="docs" hidden>
+        <div class="view-head"><div><h2>API Documentation</h2><p>Ringkasan endpoint langsung dari server. Dokumentasi lengkap dengan contoh JavaScript, PHP, dan Python tersedia di halaman dokumentasi.</p></div>
+          <div class="row"><a class="btn btn-primary" href="/documentation" data-icon="book">Buka dokumentasi lengkap</a><a class="btn" href="/api/swagger" target="_blank" rel="noopener">OpenAPI / Swagger</a></div></div>
+        <div class="card" style="padding:18px;margin-bottom:18px"><strong>Base URL</strong><div class="key-secret" style="margin-top:8px"><code data-base-url id="dash-base"></code><button class="btn" type="button" data-copy="#dash-base" data-icon="copy">Copy</button></div>
+          <p class="small muted" style="margin:10px 0 0">Header autentikasi: <code class="inline">X-API-Key: ayaka_live_…</code> — jangan pernah kirim key lewat URL.</p></div>
+        <div class="toolbar"><div class="field"><input class="input" id="docs-filter" type="search" placeholder="Cari endpoint…" aria-label="Cari endpoint"></div></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Permission</th><th>Fungsi</th></tr></thead><tbody id="docs-rows"><tr><td colspan="5"><div class="skeleton" style="height:36px"></div></td></tr></tbody></table></div>
+      </section>
+
+      <!-- PLAYGROUND -->
+      <section class="view" data-view="playground" hidden>
+        <div class="view-head"><div><h2>API Playground</h2><p>Kirim request nyata ke AYAKA API. Request dikirim tanpa cookie sesi — hanya dengan API Key yang Anda masukkan, dan key tidak disimpan.</p></div></div>
+        <div class="pg-grid">
+          <form class="card pg-req" id="pg-form" style="padding:18px" autocomplete="off">
+            <div class="field"><label for="pg-preset">Preset</label><select class="input" id="pg-preset"></select></div>
+            <div class="field"><label for="pg-url">Method &amp; Endpoint</label><div class="row" style="gap:8px">
+              <select class="input" id="pg-method" aria-label="Method"><option>GET</option><option>POST</option><option>PATCH</option><option>DELETE</option></select>
+              <input class="input mono" id="pg-url" value="/api/user/profile" required maxlength="300" style="flex:1;min-width:0"></div></div>
+            <div class="field"><label for="pg-key">X-API-Key</label><div class="pw-wrap"><input class="input mono" id="pg-key" type="password" placeholder="ayaka_live_…" autocomplete="off" spellcheck="false"><button class="pw-toggle" type="button" id="pg-key-toggle" aria-label="Tampilkan key" data-icon="eye"></button></div>
+              <span class="hint">Kosongkan untuk endpoint publik seperti /api/health.</span></div>
+            <div class="field"><label for="pg-body">JSON Body</label><textarea class="input mono" id="pg-body" rows="8" spellcheck="false" placeholder='{ "email": "user@example.com" }'></textarea><span class="error-text" id="pg-body-err"></span></div>
+            <div class="row"><button class="btn btn-primary" type="submit" id="pg-send" data-icon="play">Send Request</button><button class="btn" type="button" id="pg-clear" data-icon="trash">Clear</button></div>
+          </form>
+          <div class="console" aria-live="polite">
+            <div class="console-bar"><span class="row" style="gap:8px"><span class="status-pill" id="pg-status">—</span><span id="pg-time">0 ms</span><span id="pg-size"></span></span>
+              <button class="btn btn-sm" type="button" id="pg-copy" data-icon="copy">Copy</button></div>
+            <pre id="pg-out"><span class="t-dim">// Respons akan muncul di sini</span></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PREMIUM -->
+      <section class="view" data-view="premium" hidden>
+        <div class="view-head"><div><h2>Magic Link Premium</h2><p>Kirim email aktivasi Premium melalui Resend. Token sekali pakai, berlaku 15 menit.</p></div></div>
+        <div class="split">
+          <form class="card" id="ml-form" style="padding:18px" novalidate>
+            <h3 style="margin-top:0">Kirim Magic Link</h3>
+            <div class="field"><label for="ml-email">Email penerima</label><input class="input" id="ml-email" type="email" required maxlength="254" placeholder="user@example.com"><span class="error-text" id="ml-email-err"></span></div>
+            <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field"><label for="ml-plan">Plan</label><select class="input" id="ml-plan"><option value="premium">Premium (30 hari)</option><option value="premium_quarterly">Quarterly (90 hari)</option><option value="premium_yearly">Yearly (365 hari)</option></select></div>
+              <div class="field"><label for="ml-name">Nama (opsional)</label><input class="input" id="ml-name" maxlength="80"></div>
+            </div>
+            <button class="btn btn-primary" type="submit" data-icon="mail">Kirim Magic Link</button>
+          </form>
+          <form class="card" id="ml-status-form" style="padding:18px">
+            <h3 style="margin-top:0">Cek status</h3>
+            <div class="field"><label for="ml-status-email">Email</label><input class="input" id="ml-status-email" type="email" required maxlength="254"></div>
+            <button class="btn" type="submit" data-icon="search">Cek</button>
+            <dl class="kv hidden" id="ml-status-out" style="margin-top:14px"></dl>
+          </form>
+        </div>
+        <h3 style="margin-top:28px">Daftar Premium</h3>
+        <div class="toolbar"><div class="field"><input class="input" id="sub-q" type="search" placeholder="Cari email…" aria-label="Cari email"></div></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Email</th><th>Plan</th><th>Status</th><th>Aktif sejak</th><th>Kedaluwarsa</th><th>Aksi</th></tr></thead><tbody id="sub-rows"><tr><td colspan="6"><div class="skeleton" style="height:36px"></div></td></tr></tbody></table></div>
+        <div class="pager" id="sub-pager"></div>
+        <h3 style="margin-top:28px">Riwayat Magic Link &amp; Renewal</h3>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Waktu</th><th>Email</th><th>Aksi</th><th>Detail</th></tr></thead><tbody id="ml-history"><tr><td colspan="4" class="muted">Memuat…</td></tr></tbody></table></div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="view" data-view="analytics" hidden>
+        <div class="view-head"><div><h2>Analytics</h2><p>Data asli dari database, diperbarui otomatis setiap 4 detik (berhenti saat tab tidak aktif).</p></div>
+          <span class="small muted">Update terakhir: <time id="an-updated">—</time></span></div>
+        <div class="kpis" id="an-kpis">
+          <div class="card kpi"><span class="k-icon" data-icon="bolt"></span><div class="k-label">Total Request</div><div class="k-value" data-an="api_requests">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="check"></span><div class="k-label">Berhasil</div><div class="k-value" data-an="requests_success">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="x"></span><div class="k-label">Gagal</div><div class="k-value" data-an="requests_failed">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="key"></span><div class="k-label">Key Dibuat</div><div class="k-value" data-an="api_keys_generated">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="spark"></span><div class="k-label">Premium Aktif</div><div class="k-value" data-an="premium_active">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="mail"></span><div class="k-label">Email Terkirim</div><div class="k-value" data-an="emails_sent">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="globe"></span><div class="k-label">Visitor Hari Ini</div><div class="k-value" data-an="visitors_today">—</div></div>
+          <div class="card kpi"><span class="k-icon" data-icon="server"></span><div class="k-label">Req / menit</div><div class="k-value" data-an="requests_last_minute">—</div></div>
+        </div>
+        <div class="charts">
+          <div class="card chart-card wide"><h3>Request API <span class="seg" id="an-range"><button data-range="minute" class="on">60 menit</button><button data-range="hour">24 jam</button><button data-range="day">30 hari</button></span></h3><div class="chart-box"><canvas id="ch-requests"></canvas></div></div>
+          <div class="card chart-card"><h3>Berhasil vs Gagal (14 hari)</h3><div class="chart-box"><canvas id="ch-success"></canvas></div></div>
+          <div class="card chart-card"><h3>API Key dibuat per hari</h3><div class="chart-box"><canvas id="ch-keys"></canvas></div></div>
+          <div class="card chart-card"><h3>Visitor unik per hari</h3><div class="chart-box"><canvas id="ch-visitors"></canvas></div></div>
+          <div class="card chart-card"><h3>Aktivasi Premium per hari</h3><div class="chart-box"><canvas id="ch-premium"></canvas></div></div>
+          <div class="card chart-card wide"><h3>Endpoint teratas</h3><div class="table-wrap"><table class="table"><thead><tr><th>Method</th><th>Endpoint</th><th>Hits</th></tr></thead><tbody id="an-top"><tr><td colspan="3" class="muted">Memuat…</td></tr></tbody></table></div></div>
+        </div>
+      </section>
+
+      <!-- LOGS -->
+      <section class="view" data-view="logs" hidden>
+        <div class="view-head"><div><h2>Request Logs</h2><p>Setiap request yang memakai akun / API Key Anda. API Key, token, dan password tidak pernah dicatat.</p></div>
+          <a class="btn" id="log-export" href="/api/logs/export.csv" data-icon="download">Export CSV</a></div>
+        <form class="toolbar" id="log-filter">
+          <div class="field"><label class="small" for="lf-q">Cari</label><input class="input" id="lf-q" name="q" type="search" placeholder="Request ID, error code…"></div>
+          <div class="field"><label class="small" for="lf-endpoint">Endpoint</label><input class="input" id="lf-endpoint" name="endpoint" placeholder="/api/am"></div>
+          <div class="field"><label class="small" for="lf-status">Status</label><select class="input" id="lf-status" name="status"><option value="">Semua</option><option value="success">Berhasil (&lt;400)</option><option value="failed">Gagal (≥400)</option><option value="2xx">2xx</option><option value="4xx">4xx</option><option value="5xx">5xx</option></select></div>
+          <div class="field"><label class="small" for="lf-key">API Key</label><select class="input" id="lf-key" name="api_key_id"><option value="">Semua</option></select></div>
+          <div class="field"><label class="small" for="lf-from">Dari</label><input class="input" id="lf-from" name="date_from" type="date"></div>
+          <div class="field"><label class="small" for="lf-to">Sampai</label><input class="input" id="lf-to" name="date_to" type="date"></div>
+          <button class="btn btn-dark" type="submit" data-icon="search">Filter</button><button class="btn" type="reset">Reset</button>
+        </form>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Waktu</th><th>Method</th><th>Endpoint</th><th>Status</th><th>Durasi</th><th>API Key</th><th>IP</th><th></th></tr></thead><tbody id="log-rows"><tr><td colspan="8"><div class="skeleton" style="height:36px"></div></td></tr></tbody></table></div>
+        <div class="pager" id="log-pager"></div>
+      </section>
+
+      <!-- WEBHOOKS -->
+      <section class="view" data-view="webhooks" hidden>
+        <div class="view-head"><div><h2>Webhook Settings</h2><p>Terima notifikasi HTTPS bertanda tangan HMAC untuk event API Key &amp; Premium.</p></div></div>
+        <form class="card" id="wh-form" style="padding:18px;margin-bottom:22px" novalidate>
+          <h3 style="margin-top:0">Tambah webhook</h3>
+          <div class="field"><label for="wh-url">URL endpoint (HTTPS publik)</label><input class="input mono" id="wh-url" type="url" required maxlength="500" placeholder="https://example.com/ayaka-webhook"><span class="error-text" id="wh-url-err"></span></div>
+          <div class="field"><label>Event</label><div class="perm-grid" id="wh-events"></div></div>
+          <button class="btn btn-primary" type="submit" data-icon="plus">Simpan webhook</button>
+        </form>
+        <div class="table-wrap"><table class="table"><thead><tr><th>URL</th><th>Event</th><th>Status</th><th>Pengiriman terakhir</th><th>Aksi</th></tr></thead><tbody id="wh-rows"><tr><td colspan="5" class="muted">Memuat…</td></tr></tbody></table></div>
+      </section>
+
+      <!-- ACCOUNT -->
+      <section class="view" data-view="account" hidden>
+        <div class="view-head"><div><h2>Account Settings</h2><p>Kelola profil dan preferensi akun.</p></div></div>
+        <div class="split">
+          <form class="card" id="profile-form" style="padding:18px" novalidate>
+            <h3 style="margin-top:0">Profil</h3>
+            <div class="field"><label for="pf-username">Username</label><input class="input" id="pf-username" disabled><span class="hint">Username bersifat permanen.</span></div>
+            <div class="field"><label for="pf-name">Nama lengkap</label><input class="input" id="pf-name" name="full_name" required minlength="2" maxlength="120"></div>
+            <div class="field"><label for="pf-email">Email</label><input class="input" id="pf-email" type="email" disabled><span class="hint">Email tidak dapat diubah dari dashboard.</span></div>
+            <button class="btn btn-primary" type="submit">Simpan profil</button>
+          </form>
+          <div class="card" style="padding:18px">
+            <h3 style="margin-top:0">Info akun</h3>
+            <dl class="kv" id="acct-info"></dl>
+            <h3>Tampilan</h3>
+            <button class="btn" type="button" data-theme-toggle>Ganti tema terang / gelap</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section class="view" data-view="security" hidden>
+        <div class="view-head"><div><h2>Security</h2><p>Password, sesi aktif, dan aktivitas keamanan.</p></div></div>
+        <div class="split">
+          <form class="card" id="pw-form" style="padding:18px" novalidate>
+            <h3 style="margin-top:0">Ganti password</h3>
+            <div class="field"><label for="pw-current">Password saat ini</label><input class="input" id="pw-current" type="password" autocomplete="current-password" required maxlength="128"></div>
+            <div class="field"><label for="pw-new">Password baru</label><input class="input" id="pw-new" type="password" autocomplete="new-password" required minlength="8" maxlength="128"><span class="hint">Min. 8 karakter, huruf besar, huruf kecil, angka.</span></div>
+            <div class="field"><label for="pw-confirm">Konfirmasi password baru</label><input class="input" id="pw-confirm" type="password" autocomplete="new-password" required maxlength="128"><span class="error-text" id="pw-err"></span></div>
+            <button class="btn btn-primary" type="submit" data-icon="lock">Ubah password</button>
+            <p class="small muted" style="margin:10px 0 0">Mengubah password akan mengeluarkan semua sesi lain.</p>
+          </form>
+          <div class="card" style="padding:18px">
+            <h3 style="margin-top:0">Sesi aktif</h3>
+            <ul class="list-plain" id="sess-list"><li class="muted">Memuat…</li></ul>
+          </div>
+        </div>
+        <h3 style="margin-top:28px">Aktivitas keamanan terbaru</h3>
+        <ul class="list-plain" id="sec-events"><li class="muted">Memuat…</li></ul>
+      </section>
+
+      <!-- HELP -->
+      <section class="view" data-view="help" hidden>
+        <div class="view-head"><div><h2>Help Center</h2><p>Jawaban cepat dan kontak support OLPI STORE.</p></div></div>
+        <div class="split">
+          <div class="faq" id="help-faq">
+            <details class="card"><summary>API Key saya hilang, bisa ditampilkan lagi?</summary><p>Tidak. AYAKA hanya menyimpan hash key. Gunakan <strong>Regenerate</strong> di API Key Manager — key lama langsung tidak berlaku.</p></details>
+            <details class="card"><summary>Kenapa request saya mendapat 401 INVALID_API_KEY?</summary><p>Pastikan header bernama <code class="inline">X-API-Key</code>, key lengkap diawali <code class="inline">ayaka_live_</code>, belum di-revoke, dan belum kedaluwarsa.</p></details>
+            <details class="card"><summary>Kenapa mendapat 403 INSUFFICIENT_PERMISSION?</summary><p>Key tidak memiliki permission yang dibutuhkan endpoint. Edit permission key di API Key Manager.</p></details>
+            <details class="card"><summary>Magic Link tidak sampai ke email.</summary><p>Periksa folder spam, pastikan alamat benar, dan cek status pengiriman di Riwayat Magic Link. Pengiriman dibatasi 5 kali per 15 menit per email.</p></details>
+            <details class="card"><summary>Apa arti 429 RATE_LIMITED?</summary><p>Batas request per menit key terlampaui. Tunggu sesuai header <code class="inline">Retry-After</code> atau naikkan limit key.</p></details>
+          </div>
+          <div class="card" style="padding:18px">
+            <h3 style="margin-top:0">Kontak</h3>
+            <ul class="list-plain">
+              <li><span><strong>Owner</strong></span><span>OLPI STORE</span></li>
+              <li><span><strong>Admin</strong></span><span>Ayaka Sync</span></li>
+              <li><span><strong>Email</strong></span><a href="mailto:olpieditz336@gmail.com">olpieditz336@gmail.com</a></li>
+              <li><span><strong>GitHub</strong></span><a href="https://github.com/olpigiantara-design" target="_blank" rel="noopener noreferrer">olpigiantara-design</a></li>
+              <li><span><strong>WhatsApp</strong></span><a href="https://whatsapp.com/channel/0029VbEbK4dHgZWWJmXFP52o" target="_blank" rel="noopener noreferrer">Channel</a></li>
+              <li><span><strong>Status</strong></span><a href="/status">Status API</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer class="small muted center" style="margin-top:40px">© <span data-year>2026</span> AYAKA API · Owner: OLPI STORE · <span class="powered">Powered by <strong>AYAKA Sync</strong></span></footer>
+  </div>
+</div>
+
+<nav class="dock" aria-label="Navigasi cepat">
+  <a href="#overview" data-nav="overview"><span data-icon="home"></span>Home</a>
+  <a href="#keys" data-nav="keys"><span data-icon="key"></span>API Keys</a>
+  <a href="#docs" data-nav="docs"><span data-icon="book"></span>Docs</a>
+  <a href="#analytics" data-nav="analytics"><span data-icon="chart"></span>Analytics</a>
+  <a href="#account" data-nav="account"><span data-icon="user"></span>Profile</a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
+<script src="/js/app.js"></script>
+<script src="/js/charts.js"></script>
+<script src="/js/dashboard.js"></script>
+<script src="/js/api-keys.js"></script>
+<script src="/js/analytics.js"></script>
+<script src="/js/playground.js"></script>
+</body>
+</html>
